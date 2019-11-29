@@ -9,6 +9,16 @@ WHITESPACE : (' ' | '\t')* ;
 
 PLUS : '+' ;
 MINUS: '-' ;
-MINUS: '*' ;
-MINUS: '/' ;
-MINUS: '%' ;
+MULTIPLICATION: '*' ;
+DIVISION: '/' ;
+MOD: '%' ;
+
+TRUE: 'true' ;
+FALSE: 'false' ;
+
+LESS: '<' ;
+LESS_OR_EQUAL: '<=' ;
+GREATER: '>' ;
+GREATER_OR_EQUAL : '>=' ;
+EQUAL : '=' ;
+NOT_EQUAL : '/=' ;
