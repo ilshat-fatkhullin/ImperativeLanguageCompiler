@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
+import parser.ParserVisitor;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -39,6 +40,10 @@ public class Main {
         PrintWriter pw = new PrintWriter(new File("ast.json"));
         pw.write(s);
         pw.close();
+
+        ParserVisitor extractor = new ParserVisitor();
+        String result = extractor.visit(tree);
+        System.out.println(result);
 
 //        ScopeChecker sc = new ScopeChecker();
 //
