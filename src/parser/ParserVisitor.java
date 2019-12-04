@@ -11,7 +11,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         String result = "";
         int n = node.getChildCount();
 
-        for(int i = 0; i < n && this.shouldVisitNextChild(node, result); ++i) {
+        for (int i = 0; i < n && this.shouldVisitNextChild(node, result); ++i) {
             ParseTree c = node.getChild(i);
             String childResult = c.accept(this);
             result += childResult;
@@ -29,7 +29,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitProgram(IParser.ProgramContext ctx) {
-        return "program " + visitChildren(ctx);
+        return "program \n" + visitChildren(ctx);
     }
 
     /**
@@ -73,7 +73,11 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRoutine_declaration(IParser.Routine_declarationContext ctx) {
-        return "routine_declaration " + visitChildren(ctx);
+        return String.format(".method static %s %s(%s) cil managed\n{\n%s\n}\n",
+                ctx.getChild(4).getText(),
+                ctx.getChild(1),
+                ctx.getChild(2).accept(this),
+                visitChildren(ctx));
     }
 
     /**
