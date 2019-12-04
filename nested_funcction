@@ -1,0 +1,14 @@
+var f := func(n) is
+    n := n*2
+    var f1:=func(q) is
+        return q+1
+    end
+
+    var b:=f1(n)
+
+    return b
+end
+
+var a:=f(4)
+print(a)
+//should be output 9
