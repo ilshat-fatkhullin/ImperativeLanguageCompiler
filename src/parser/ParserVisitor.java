@@ -72,7 +72,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
     public String visitProgram(IParser.ProgramContext ctx) {
         targetIterator = 0;
 
-        String int32Printer = "\n.method public static void print_int(int32 a) cil managed \n" +
+        String int32Printer = "\n.method public static void print_integer(int32 a) cil managed \n" +
                 "{\n" +
                 "ldarg.0\n" +
                 "call void [mscorlib]System.Console::WriteLine(int32)\n" +
@@ -86,12 +86,21 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 "ret\n" +
                 "}\n";
 
-        identifierToRoutineCall.put("print_int", "void print_int(int32)");
+        String boolPrinter = "\n.method public static void print_boolean(bool a) cil managed \n" +
+                "{\n" +
+                "ldarg.0\n" +
+                "call void [mscorlib]System.Console::WriteLine(bool)\n" +
+                "ret\n" +
+                "}\n";
+
+        identifierToRoutineCall.put("print_integer", "void print_integer(int32)");
         identifierToRoutineCall.put("print_real", "void print_real(float32)");
+        identifierToRoutineCall.put("print_boolean", "void print_boolean(bool)");
 
         return String.format(".assembly example{}" +
                 int32Printer +
                 realPrinter +
+                boolPrinter +
                 "%s", visitChildren(ctx));
     }
 
@@ -605,8 +614,19 @@ public class ParserVisitor extends IBaseVisitor<String> {
     @Override
     public String visitPrimary(IParser.PrimaryContext ctx) {
         if (ctx.getChild(0).getChildCount() == 0) {
-            return String.format("ldc.i4 %s\n", ctx.getChild(0).getText());
+            String constant = ctx.getChild(0).getText();
+            if (constant.contains(".")) {
+                return String.format("ldc.r4 %s\n", constant);
+            }
+            if (constant.equals("true")) {
+                return "ldc.i4.1\n";
+            }
+            if (constant.equals("false")) {
+                return "ldc.i4.0\n";
+            }
+            return String.format("ldc.i4 %s\n", constant);
         }
+
         String identifier = visitChildren(ctx);
 
         for (Hashtable<String, Integer> h : variableToNumberStack) {

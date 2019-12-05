@@ -1,15 +1,15 @@
-routine add_value(a: integer): integer is
-a := a + 1
-print_int(a)
+routine add_value(a: boolean): boolean is
+a := a xor a
+print_boolean (a)
 return a
 end
 
 routine main() is
-var b : integer is 3 + 4
-if b = 7 then
-    b := 2
+var b : boolean is false
+if b = false then
+    b := true
 end
-print_int(b)
+print_boolean (b)
 b := add_value(b)
-print_int(b)
+print_boolean (b)
 end

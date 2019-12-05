@@ -31,8 +31,8 @@
                     {
                       "primitive_type": [
                         {
-                          "type": 31,
-                          "text": "integer"
+                          "type": 33,
+                          "text": "boolean"
                         }
                       ]
                     }
@@ -55,8 +55,8 @@
             {
               "primitive_type": [
                 {
-                  "type": 31,
-                  "text": "integer"
+                  "type": 33,
+                  "text": "boolean"
                 }
               ]
             }
@@ -107,18 +107,34 @@
                                           ]
                                         }
                                       ]
-                                    },
-                                    {
-                                      "type": 1,
-                                      "text": "+"
-                                    },
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": 17,
+                          "text": "xor"
+                        },
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
                                     {
                                       "summand": [
                                         {
                                           "primary": [
                                             {
-                                              "type": 46,
-                                              "text": "1"
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 45,
+                                                  "text": "a"
+                                                }
+                                              ]
                                             }
                                           ]
                                         }
@@ -142,7 +158,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int"
+                      "text": "print_boolean"
                     },
                     {
                       "type": 43,
@@ -257,8 +273,8 @@
                         {
                           "primitive_type": [
                             {
-                              "type": 31,
-                              "text": "integer"
+                              "type": 33,
+                              "text": "boolean"
                             }
                           ]
                         }
@@ -281,24 +297,8 @@
                                         {
                                           "primary": [
                                             {
-                                              "type": 46,
-                                              "text": "3"
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    },
-                                    {
-                                      "type": 1,
-                                      "text": "+"
-                                    },
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "type": 46,
-                                              "text": "4"
+                                              "type": 7,
+                                              "text": "false"
                                             }
                                           ]
                                         }
@@ -365,8 +365,8 @@
                                         {
                                           "primary": [
                                             {
-                                              "type": 46,
-                                              "text": "7"
+                                              "type": 7,
+                                              "text": "false"
                                             }
                                           ]
                                         }
@@ -415,8 +415,8 @@
                                                     {
                                                       "primary": [
                                                         {
-                                                          "type": 46,
-                                                          "text": "2"
+                                                          "type": 6,
+                                                          "text": "true"
                                                         }
                                                       ]
                                                     }
@@ -450,7 +450,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int"
+                      "text": "print_boolean"
                     },
                     {
                       "type": 43,
@@ -590,7 +590,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int"
+                      "text": "print_boolean"
                     },
                     {
                       "type": 43,
