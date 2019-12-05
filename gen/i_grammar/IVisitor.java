@@ -89,6 +89,12 @@ public interface IVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(IParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link IParser#return_statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn_statement(IParser.Return_statementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link IParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

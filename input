@@ -1,6 +1,7 @@
-routine add_value(a: integer) is
+routine add_value(a: integer): integer is
 a := a + 1
 print_int32(a)
+return a
 end
 
 routine main() is
@@ -9,5 +10,6 @@ if b = 7 then
     b := 2
 end
 print_int32(b)
-add_value(b)
+b := add_value(b)
+print_int32(b)
 end

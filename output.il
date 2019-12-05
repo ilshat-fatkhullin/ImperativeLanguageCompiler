@@ -5,7 +5,7 @@ ldarg.0
 call void [mscorlib]System.Console::WriteLine(int32)
 ret
 }
-.method public static void add_value(int32 a) cil managed
+.method public static int32 add_value(int32 a) cil managed
 {
 ldarg.0
 ldc.i4 1
@@ -13,6 +13,7 @@ add
 starg 0
 ldarg.0
 call void print_int32(int32)
+ldarg 0
 ret
 }
 .method public static void main() cil managed
@@ -38,6 +39,9 @@ IL_0004:
 ldloc.0
 call void print_int32(int32)
 ldloc.0
-call void add_value(int32)
+call int32 add_value(int32)
+stloc.0
+ldloc.0
+call void print_int32(int32)
 ret
 }

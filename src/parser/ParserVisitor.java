@@ -35,7 +35,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         if (parameterToNumber.containsKey(identifier)) {
             return parameterToNumber.get(identifier);
         } else {
-            System.out.println(String.format("Error: %s is not defined.", identifier));
+            System.out.println(String.format("(getVariableNumber) error: %s is not defined.", identifier));
             return 0;
         }
     }
@@ -301,21 +301,44 @@ public class ParserVisitor extends IBaseVisitor<String> {
      * {@link #visitChildren} on {@code ctx}.</p>
      */
     @Override
+    public String visitReturn_statement(IParser.Return_statementContext ctx) {
+        String identifier = ctx.getChild(1).getText();
+
+        for (Hashtable<String, Integer> h : variableToNumberStack) {
+            if (h.containsKey(identifier)) {
+                return String.format("ldloc.%d\n", h.get(identifier));
+            }
+        }
+        if (parameterToNumber.containsKey(identifier)) {
+            return String.format("ldarg %d\n", parameterToNumber.get(identifier));
+        } else {
+            System.out.println(String.format("(return statement) error: %s is not defined.", identifier));
+            return "null";
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
     public String visitAssignment(IParser.AssignmentContext ctx) {
         String identifier = ctx.getChild(0).accept(this);
         for (Hashtable<String, Integer> h : variableToNumberStack) {
             if (h.containsKey(identifier)) {
                 return String.format("%sstloc.%d\n",
                         ctx.getChild(2).accept(this),
-                        h.get(ctx.getChild(0).accept(this)));
+                        h.get(identifier));
             }
         }
         if (parameterToNumber.containsKey(identifier)) {
             return String.format("%sstarg %d\n",
                     ctx.getChild(2).accept(this),
-                    parameterToNumber.get(ctx.getChild(0).accept(this)));
+                    parameterToNumber.get(identifier));
         } else {
-            System.out.println(String.format("Error: %s is not defined.", identifier));
+            System.out.println(String.format("(assignment) error: %s is not defined.", identifier));
             return "null";
         }
     }
@@ -330,13 +353,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
     public String visitRoutine_call(IParser.Routine_callContext ctx) {
         String identifier = ctx.getChild(0).getText();
         if (!identifierToRoutineCall.containsKey(identifier)) {
-            System.out.println(String.format("Error: %s is not defined.", identifier));
+            System.out.println(String.format("(routine call) error: %s is not defined.", identifier));
             return "null";
         }
 
         String routineCall = identifierToRoutineCall.get(identifier);
 
-        if (ctx.getChildCount() == 1) {
+        if (ctx.getChildCount() == 3) {
             return String.format("call %s\n", routineCall);
         }
         StringBuilder result = new StringBuilder();
@@ -448,7 +471,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 op = "xor";
                 break;
             default:
-                System.out.println("Error when parsing op code.");
+                System.out.println("(expression) error when parsing op code.");
                 return "";
         }
         return String.format("%s%s%s\n",
@@ -486,7 +509,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 op = "ceq";
                 break;
             default:
-                System.out.println("Error when parsing op code.");
+                System.out.println("(relation) error when parsing op code.");
                 return "";
         }
         return String.format("%s%s%s\n",
@@ -586,7 +609,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         if (parameterToNumber.containsKey(identifier)) {
             return String.format("ldarg.%d\n", parameterToNumber.get(visitChildren(ctx)));
         } else {
-            System.out.println(String.format("Error: %s is not defined.", identifier));
+            System.out.println(String.format("(primary) error: %s is not defined.", identifier));
             return "null";
         }
     }

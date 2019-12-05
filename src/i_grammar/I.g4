@@ -38,6 +38,7 @@ INTEGER : 'integer' ;
 REAL : 'real' ;
 BOOLEAN : 'boolean' ;
 ROUTINE : 'routine' ;
+RETURN : 'return' ;
 TYPE : 'type' ;
 IS : 'is' ;
 VAR : 'var' ;
@@ -100,11 +101,15 @@ array_type
     ;
 
 body
-    : (simple_declaration)* (statement)*
+    : (simple_declaration)* (statement)* (return_statement)?
     ;
 
 statement
     : assignment | routine_call | while_loop | for_loop | foreach_loop | if_statement
+    ;
+
+return_statement
+    : RETURN IDENTIFIER
     ;
 
 assignment
@@ -112,7 +117,7 @@ assignment
     ;
 
 routine_call
-    : IDENTIFIER (LPAREN expression ( COMMA expression )* RPAREN)?
+    : IDENTIFIER LPAREN ( expression ( COMMA expression )*)? RPAREN
     ;
 
 while_loop
@@ -152,7 +157,7 @@ factor
     ;
 
 summand
-    : primary | ( LPAREN expression RPAREN )
+    : routine_call | primary | ( LPAREN expression RPAREN )
     ;
 
 primary

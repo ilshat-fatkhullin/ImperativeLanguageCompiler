@@ -138,6 +138,16 @@ public interface IListener extends ParseTreeListener {
 	 */
 	void exitStatement(IParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IParser#return_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_statement(IParser.Return_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IParser#return_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_statement(IParser.Return_statementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IParser#assignment}.
 	 * @param ctx the parse tree
 	 */
