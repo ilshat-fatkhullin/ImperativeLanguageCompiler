@@ -81,6 +81,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitSimple_declaration(IParser.Simple_declarationContext ctx) {
+        variableInitializations = new ArrayList<>();
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < ctx.getChildCount(); i++) {
             result.append(ctx.getChild(i).accept(this));
@@ -88,7 +89,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 result.append(",\n");
             }
         }
-        return String.format(".locals init (\n%s\n)\n", result);
+
+        StringBuilder initializations = new StringBuilder();
+        for (String initialization : variableInitializations) {
+            initializations.append(initialization);
+        }
+
+        return String.format(".locals init (\n%s\n)\n%s", result, initializations.toString());
     }
 
     /**
@@ -102,6 +109,12 @@ public class ParserVisitor extends IBaseVisitor<String> {
         Integer number = variableToNumberStack.peek().size();
         String identifier = ctx.getChild(1).getText();
         variableToNumberStack.peek().put(identifier, number);
+        if (ctx.getChildCount() == 6) {
+            String initialization = String.format("%sstloc.%d\n",
+                    ctx.getChild(5).accept(this),
+                    number);
+            variableInitializations.add(initialization);
+        }
         return String.format("[%d] %s %s", number, ctx.getChild(3).accept(this), identifier);
     }
 

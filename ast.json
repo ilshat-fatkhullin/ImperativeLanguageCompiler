@@ -114,7 +114,23 @@
                                           "primary": [
                                             {
                                               "type": 45,
-                                              "text": "0"
+                                              "text": "3"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": 1,
+                                      "text": "+"
+                                    },
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "type": 45,
+                                              "text": "4"
                                             }
                                           ]
                                         }

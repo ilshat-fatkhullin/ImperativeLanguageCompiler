@@ -1,5 +1,5 @@
 routine main(a: integer): integer is
-var b : integer is 0
+var b : integer is 3 + 4
 var c : boolean
 b := b + 1
 end
