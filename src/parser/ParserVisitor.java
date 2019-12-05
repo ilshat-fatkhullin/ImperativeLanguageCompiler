@@ -6,6 +6,13 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 
 public class ParserVisitor extends IBaseVisitor<String> {
+    private int iterator = 0;
+
+    public String getNextTarget() {
+        iterator++;
+        return String.format("target_%d", iterator);
+    }
+
     @Override
     public String visitChildren(RuleNode node) {
         String result = "";
@@ -29,7 +36,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitProgram(IParser.ProgramContext ctx) {
-        return "program \n" + visitChildren(ctx);
+        return visitChildren(ctx);
     }
 
     /**
@@ -73,11 +80,20 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRoutine_declaration(IParser.Routine_declarationContext ctx) {
-        return String.format(".method static %s %s(%s) cil managed\n{\n%s\n}\n",
-                ctx.getChild(4).getText(),
-                ctx.getChild(1),
-                ctx.getChild(2).accept(this),
-                visitChildren(ctx));
+        switch (ctx.getChild(1).toString()) {
+            case "main":
+                return String.format(".method static %s %s(%s) cil managed\n{\n.entrypoint\n%s}\n",
+                        ctx.getChild(4).accept(this),
+                        ctx.getChild(1),
+                        ctx.getChild(2).accept(this),
+                        ctx.getChild(6).accept(this));
+            default:
+                return String.format(".method static %s %s(%s) cil managed\n{\n%s\n}\n",
+                        ctx.getChild(4).accept(this),
+                        ctx.getChild(1),
+                        ctx.getChild(2).accept(this),
+                        ctx.getChild(6).accept(this));
+        }
     }
 
     /**
@@ -88,7 +104,14 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitParameters(IParser.ParametersContext ctx) {
-        return "parameters " + visitChildren(ctx);
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < ctx.getChildCount() - 1; i++) {
+            result.append(ctx.getChild(i).accept(this));
+            if (i != ctx.getChildCount() - 2) {
+                result.append(", ");
+            }
+        }
+        return result.toString();
     }
 
     /**
@@ -99,7 +122,9 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitParameter_declaration(IParser.Parameter_declarationContext ctx) {
-        return "parameter_declaration " + visitChildren(ctx);
+        String identifier = ctx.getChild(0).getText();
+        String type = ctx.getChild(2).accept(this);
+        return String.format("%s %s", type, identifier);
     }
 
     /**
@@ -110,7 +135,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitType(IParser.TypeContext ctx) {
-        return "type " + visitChildren(ctx);
+        return visitChildren(ctx);
     }
 
     /**
@@ -121,7 +146,15 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitPrimitive_type(IParser.Primitive_typeContext ctx) {
-        return "primitive_type " + visitChildren(ctx);
+        switch (ctx.getText()) {
+            case "integer":
+                return "int32";
+            case "boolean":
+                return "bool";
+            case "real":
+                return "float32";
+        }
+        return ctx.getText();
     }
 
     /**
@@ -154,7 +187,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitBody(IParser.BodyContext ctx) {
-        return "body " + visitChildren(ctx);
+        return visitChildren(ctx);
     }
 
     /**
@@ -165,7 +198,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitStatement(IParser.StatementContext ctx) {
-        return "statement " + visitChildren(ctx);
+        return visitChildren(ctx);
     }
 
     /**
@@ -176,7 +209,9 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitAssignment(IParser.AssignmentContext ctx) {
-        return "assignment " + visitChildren(ctx);
+        return String.format("%sstloc %s\n",
+                ctx.getChild(2).accept(this),
+                ctx.getChild(0).accept(this));
     }
 
     /**
@@ -253,7 +288,28 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitExpression(IParser.ExpressionContext ctx) {
-        return "expression " + visitChildren(ctx);
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        String op;
+        switch (ctx.getChild(1).getText()) {
+            case "and":
+                op = "and";
+                break;
+            case "or":
+                op = "or";
+                break;
+            case "xor":
+                op = "xor";
+                break;
+            default:
+                System.out.println("Error when parsing op code.");
+                return "";
+        }
+        return String.format("%s%s%s\n",
+                ctx.getChild(0).accept(this),
+                ctx.getChild(2).accept(this),
+                op);
     }
 
     /**
@@ -264,7 +320,34 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRelation(IParser.RelationContext ctx) {
-        return "relation " + visitChildren(ctx);
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        String op;
+        switch (ctx.getChild(1).getText()) {
+            case "<":
+                op = "clt";
+                break;
+            case "<=":
+                op = "ble";
+                break;
+            case ">":
+                op = "cgt";
+                break;
+            case ">=":
+                op = "bge";
+                break;
+            case "=":
+                op = "ceq";
+                break;
+            default:
+                System.out.println("Error when parsing op code.");
+                return "";
+        }
+        return String.format("%s%s%s\n",
+                ctx.getChild(0).accept(this),
+                ctx.getChild(2).accept(this),
+                op);
     }
 
     /**
@@ -275,7 +358,25 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitSimple(IParser.SimpleContext ctx) {
-        return "simple " + visitChildren(ctx);
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        String op;
+        switch (ctx.getChild(1).getText()) {
+            case "*":
+                op = "mul";
+                break;
+            case "/":
+                op = "div";
+                break;
+            default:
+                System.out.println("Error when parsing op code.");
+                return "";
+        }
+        return String.format("%s%s%s\n",
+                ctx.getChild(0).accept(this),
+                ctx.getChild(2).accept(this),
+                op);
     }
 
     /**
@@ -286,7 +387,25 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitFactor(IParser.FactorContext ctx) {
-        return "factor " + visitChildren(ctx);
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        String op;
+        switch (ctx.getChild(1).getText()) {
+            case "+":
+                op = "add";
+                break;
+            case "-":
+                op = "sub";
+                break;
+            default:
+                System.out.println("Error when parsing op code.");
+                return "";
+        }
+        return String.format("%s%s%s\n",
+                ctx.getChild(0).accept(this),
+                ctx.getChild(2).accept(this),
+                op);
     }
 
     /**
@@ -297,7 +416,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitSummand(IParser.SummandContext ctx) {
-        return "summand " + visitChildren(ctx);
+        return visitChildren(ctx);
     }
 
     /**
@@ -308,7 +427,10 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitPrimary(IParser.PrimaryContext ctx) {
-        return "primary " + visitChildren(ctx);
+        if (ctx.getChild(0).getChildCount() == 0) {
+            return String.format("ldc.i4 %s\n", ctx.getChild(0).getText());
+        }
+        return String.format("ldloc %s\n", visitChildren(ctx));
     }
 
     /**
@@ -319,6 +441,6 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitModifiable_primary(IParser.Modifiable_primaryContext ctx) {
-        return "modifiable_primary " + visitChildren(ctx);
+        return ctx.getText();
     }
 }
