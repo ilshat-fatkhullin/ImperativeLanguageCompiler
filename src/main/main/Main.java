@@ -9,14 +9,16 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import parser.ParserVisitor;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CharStream stream = CharStreams.fromFileName("test");
+        CharStream stream = CharStreams.fromFileName("input");
 
         ILexer lexer = new ILexer(stream);
 
@@ -44,6 +46,10 @@ public class Main {
         ParserVisitor extractor = new ParserVisitor();
         String result = extractor.visit(tree);
         System.out.println(result);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("output.il"));
+        writer.write(result);
+        writer.close();
     }
 
 }

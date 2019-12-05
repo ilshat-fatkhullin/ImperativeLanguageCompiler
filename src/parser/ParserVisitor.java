@@ -165,7 +165,15 @@ public class ParserVisitor extends IBaseVisitor<String> {
             type = "void";
         }
 
-        identifierToRoutineCall.put(identifier, String.format("%s %s(%s)", type, identifier, parameters));
+        String callParameters = parameters.replace(',', ' ');
+        String[] parts = callParameters.split(" ");
+        StringBuilder formattedCallParameters = new StringBuilder();
+        for (int i = 0; i < parts.length; i += 2) {
+            formattedCallParameters.append(parts[i]);
+            formattedCallParameters.append(' ');
+        }
+
+        identifierToRoutineCall.put(identifier, String.format("%s %s(%s)", type, identifier, formattedCallParameters.toString().trim()));
 
         String body = ctx.getChild(ctx.getChildCount() - 2).accept(this);
 
