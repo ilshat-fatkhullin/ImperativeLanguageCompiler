@@ -142,7 +142,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int32"
+                      "text": "print_int"
                     },
                     {
                       "type": 43,
@@ -450,7 +450,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int32"
+                      "text": "print_int"
                     },
                     {
                       "type": 43,
@@ -590,7 +590,7 @@
                   "routine_call": [
                     {
                       "type": 45,
-                      "text": "print_int32"
+                      "text": "print_int"
                     },
                     {
                       "type": 43,

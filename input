@@ -1,6 +1,6 @@
 routine add_value(a: integer): integer is
 a := a + 1
-print_int32(a)
+print_int(a)
 return a
 end
 
@@ -9,7 +9,7 @@ var b : integer is 3 + 4
 if b = 7 then
     b := 2
 end
-print_int32(b)
+print_int(b)
 b := add_value(b)
-print_int32(b)
+print_int(b)
 end

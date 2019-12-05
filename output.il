@@ -1,8 +1,15 @@
 .assembly example{}
-.method public static void print_int32(int32 a) cil managed 
+.method public static void print_int(int32 a) cil managed 
 {
 ldarg.0
 call void [mscorlib]System.Console::WriteLine(int32)
+ret
+}
+
+.method public static void print_real(float32 a) cil managed 
+{
+ldarg.0
+call void [mscorlib]System.Console::WriteLine(float32)
 ret
 }
 .method public static int32 add_value(int32 a) cil managed
@@ -12,7 +19,7 @@ ldc.i4 1
 add
 starg 0
 ldarg.0
-call void print_int32(int32)
+call void print_int(int32)
 ldarg 0
 ret
 }
@@ -37,11 +44,11 @@ ldc.i4 2
 stloc.0
 IL_0004:
 ldloc.0
-call void print_int32(int32)
+call void print_int(int32)
 ldloc.0
 call int32 add_value(int32)
 stloc.0
 ldloc.0
-call void print_int32(int32)
+call void print_int(int32)
 ret
 }

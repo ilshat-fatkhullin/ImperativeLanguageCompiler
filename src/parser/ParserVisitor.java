@@ -72,17 +72,26 @@ public class ParserVisitor extends IBaseVisitor<String> {
     public String visitProgram(IParser.ProgramContext ctx) {
         targetIterator = 0;
 
-        String int32Printer = "\n.method public static void print_int32(int32 a) cil managed \n" +
+        String int32Printer = "\n.method public static void print_int(int32 a) cil managed \n" +
                 "{\n" +
                 "ldarg.0\n" +
                 "call void [mscorlib]System.Console::WriteLine(int32)\n" +
                 "ret\n" +
                 "}\n";
 
-        identifierToRoutineCall.put("print_int32", "void print_int32(int32)");
+        String realPrinter = "\n.method public static void print_real(float32 a) cil managed \n" +
+                "{\n" +
+                "ldarg.0\n" +
+                "call void [mscorlib]System.Console::WriteLine(float32)\n" +
+                "ret\n" +
+                "}\n";
+
+        identifierToRoutineCall.put("print_int", "void print_int(int32)");
+        identifierToRoutineCall.put("print_real", "void print_real(float32)");
 
         return String.format(".assembly example{}" +
                 int32Printer +
+                realPrinter +
                 "%s", visitChildren(ctx));
     }
 
