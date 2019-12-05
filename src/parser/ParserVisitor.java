@@ -398,7 +398,16 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitWhile_loop(IParser.While_loopContext ctx) {
-        return "while_loop " + visitChildren(ctx);
+        String startExpressionTarget = getNextTarget();
+        String startBodyTarget = getNextTarget();
+        String endBodyTarget = getNextTarget();
+        return String.format("%s:\n%sldc.i4.0\nbeq %s\n%sbr %s\n%s:\n",
+                startExpressionTarget,
+                ctx.getChild(1).accept(this),
+                endBodyTarget,
+                ctx.getChild(3).accept(this),
+                startExpressionTarget,
+                endBodyTarget);
     }
 
     /**

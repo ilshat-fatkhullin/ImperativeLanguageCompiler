@@ -8,230 +8,6 @@
         },
         {
           "type": 45,
-          "text": "add_value"
-        },
-        {
-          "parameters": [
-            {
-              "type": 43,
-              "text": "("
-            },
-            {
-              "parameter_declaration": [
-                {
-                  "type": 45,
-                  "text": "a"
-                },
-                {
-                  "type": 39,
-                  "text": ":"
-                },
-                {
-                  "type": [
-                    {
-                      "primitive_type": [
-                        {
-                          "type": 33,
-                          "text": "boolean"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": 44,
-              "text": ")"
-            }
-          ]
-        },
-        {
-          "type": 39,
-          "text": ":"
-        },
-        {
-          "type": [
-            {
-              "primitive_type": [
-                {
-                  "type": 33,
-                  "text": "boolean"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": 37,
-          "text": "is"
-        },
-        {
-          "body": [
-            {
-              "statement": [
-                {
-                  "assignment": [
-                    {
-                      "modifiable_primary": [
-                        {
-                          "type": 45,
-                          "text": "a"
-                        }
-                      ]
-                    },
-                    {
-                      "type": 14,
-                      "text": ":\u003d"
-                    },
-                    {
-                      "expression": [
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "modifiable_primary": [
-                                                {
-                                                  "type": 45,
-                                                  "text": "a"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": 17,
-                          "text": "xor"
-                        },
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "modifiable_primary": [
-                                                {
-                                                  "type": 45,
-                                                  "text": "a"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "statement": [
-                {
-                  "routine_call": [
-                    {
-                      "type": 45,
-                      "text": "print_boolean"
-                    },
-                    {
-                      "type": 43,
-                      "text": "("
-                    },
-                    {
-                      "expression": [
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "modifiable_primary": [
-                                                {
-                                                  "type": 45,
-                                                  "text": "a"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": 44,
-                      "text": ")"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "return_statement": [
-                {
-                  "type": 35,
-                  "text": "return"
-                },
-                {
-                  "type": 45,
-                  "text": "a"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": 21,
-          "text": "end"
-        }
-      ]
-    },
-    {
-      "routine_declaration": [
-        {
-          "type": 34,
-          "text": "routine"
-        },
-        {
-          "type": 45,
           "text": "main"
         },
         {
@@ -273,8 +49,8 @@
                         {
                           "primitive_type": [
                             {
-                              "type": 33,
-                              "text": "boolean"
+                              "type": 31,
+                              "text": "integer"
                             }
                           ]
                         }
@@ -297,8 +73,8 @@
                                         {
                                           "primary": [
                                             {
-                                              "type": 7,
-                                              "text": "false"
+                                              "type": 46,
+                                              "text": "0"
                                             }
                                           ]
                                         }
@@ -319,10 +95,10 @@
             {
               "statement": [
                 {
-                  "if_statement": [
+                  "while_loop": [
                     {
-                      "type": 18,
-                      "text": "if"
+                      "type": 28,
+                      "text": "while"
                     },
                     {
                       "expression": [
@@ -353,8 +129,8 @@
                               ]
                             },
                             {
-                              "type": 12,
-                              "text": "\u003d"
+                              "type": 8,
+                              "text": "\u003c"
                             },
                             {
                               "simple": [
@@ -365,8 +141,8 @@
                                         {
                                           "primary": [
                                             {
-                                              "type": 7,
-                                              "text": "false"
+                                              "type": 46,
+                                              "text": "10"
                                             }
                                           ]
                                         }
@@ -381,11 +157,63 @@
                       ]
                     },
                     {
-                      "type": 19,
-                      "text": "then"
+                      "type": 24,
+                      "text": "loop"
                     },
                     {
                       "body": [
+                        {
+                          "statement": [
+                            {
+                              "routine_call": [
+                                {
+                                  "type": 45,
+                                  "text": "print_integer"
+                                },
+                                {
+                                  "type": 43,
+                                  "text": "("
+                                },
+                                {
+                                  "expression": [
+                                    {
+                                      "relation": [
+                                        {
+                                          "simple": [
+                                            {
+                                              "factor": [
+                                                {
+                                                  "summand": [
+                                                    {
+                                                      "primary": [
+                                                        {
+                                                          "modifiable_primary": [
+                                                            {
+                                                              "type": 45,
+                                                              "text": "b"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": 44,
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
                         {
                           "statement": [
                             {
@@ -415,8 +243,28 @@
                                                     {
                                                       "primary": [
                                                         {
-                                                          "type": 6,
-                                                          "text": "true"
+                                                          "modifiable_primary": [
+                                                            {
+                                                              "type": 45,
+                                                              "text": "b"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": 1,
+                                                  "text": "+"
+                                                },
+                                                {
+                                                  "summand": [
+                                                    {
+                                                      "primary": [
+                                                        {
+                                                          "type": 46,
+                                                          "text": "1"
                                                         }
                                                       ]
                                                     }
@@ -439,198 +287,6 @@
                     {
                       "type": 21,
                       "text": "end"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "statement": [
-                {
-                  "routine_call": [
-                    {
-                      "type": 45,
-                      "text": "print_boolean"
-                    },
-                    {
-                      "type": 43,
-                      "text": "("
-                    },
-                    {
-                      "expression": [
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "modifiable_primary": [
-                                                {
-                                                  "type": 45,
-                                                  "text": "b"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": 44,
-                      "text": ")"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "statement": [
-                {
-                  "assignment": [
-                    {
-                      "modifiable_primary": [
-                        {
-                          "type": 45,
-                          "text": "b"
-                        }
-                      ]
-                    },
-                    {
-                      "type": 14,
-                      "text": ":\u003d"
-                    },
-                    {
-                      "expression": [
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "routine_call": [
-                                            {
-                                              "type": 45,
-                                              "text": "add_value"
-                                            },
-                                            {
-                                              "type": 43,
-                                              "text": "("
-                                            },
-                                            {
-                                              "expression": [
-                                                {
-                                                  "relation": [
-                                                    {
-                                                      "simple": [
-                                                        {
-                                                          "factor": [
-                                                            {
-                                                              "summand": [
-                                                                {
-                                                                  "primary": [
-                                                                    {
-                                                                      "modifiable_primary": [
-                                                                        {
-                                                                          "type": 45,
-                                                                          "text": "b"
-                                                                        }
-                                                                      ]
-                                                                    }
-                                                                  ]
-                                                                }
-                                                              ]
-                                                            }
-                                                          ]
-                                                        }
-                                                      ]
-                                                    }
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": 44,
-                                              "text": ")"
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "statement": [
-                {
-                  "routine_call": [
-                    {
-                      "type": 45,
-                      "text": "print_boolean"
-                    },
-                    {
-                      "type": 43,
-                      "text": "("
-                    },
-                    {
-                      "expression": [
-                        {
-                          "relation": [
-                            {
-                              "simple": [
-                                {
-                                  "factor": [
-                                    {
-                                      "summand": [
-                                        {
-                                          "primary": [
-                                            {
-                                              "modifiable_primary": [
-                                                {
-                                                  "type": 45,
-                                                  "text": "b"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": 44,
-                      "text": ")"
                     }
                   ]
                 }
