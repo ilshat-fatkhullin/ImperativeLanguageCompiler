@@ -44,25 +44,6 @@ public class Main {
         ParserVisitor extractor = new ParserVisitor();
         String result = extractor.visit(tree);
         System.out.println(result);
-
-//        ScopeChecker sc = new ScopeChecker();
-//
-//        sc.check(tree);
-//        Parser p = new Parser(tree);
-//
-//        Body b = null;
-//
-//        try {
-//            b = p.parse();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            b.execute(new Scope(null));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
 }

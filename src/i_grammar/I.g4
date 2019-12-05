@@ -72,11 +72,11 @@ type_declaration
     ;
 
 routine_declaration
-    : ROUTINE IDENTIFIER parameters COLON type IS body END
+    : ROUTINE IDENTIFIER parameters (COLON type)? IS body END
     ;
 
 parameters
-    : LPAREN parameter_declaration ( COMMA parameter_declaration )* RPAREN
+    : LPAREN (parameter_declaration ( COMMA parameter_declaration )*)? RPAREN
     ;
 
 parameter_declaration

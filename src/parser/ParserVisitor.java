@@ -7,11 +7,10 @@ import org.antlr.v4.runtime.tree.RuleNode;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Queue;
 import java.util.Stack;
 
 public class ParserVisitor extends IBaseVisitor<String> {
-    private int iterator = 0;
+    private int targetIterator = 0;
 
     private Hashtable<String, Integer> parameterToNumber = new Hashtable<>();
 
@@ -19,9 +18,11 @@ public class ParserVisitor extends IBaseVisitor<String> {
 
     private ArrayList<String> variableInitializations = new ArrayList<>();
 
-    public String getNextTarget() {
-        iterator++;
-        return String.format("target_%d", iterator);
+    private Hashtable<String, String> identifierToRoutineCall = new Hashtable<>();
+
+    private String getNextTarget() {
+        targetIterator++;
+        return String.format("IL_%04d", targetIterator);
     }
 
     public Integer getVariableNumber(String identifier) {
@@ -53,8 +54,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         int n = node.getChildCount();
 
         for (int i = 0; i < n && this.shouldVisitNextChild(node, result); ++i) {
-            ParseTree c = node.getChild(i);
-            String childResult = c.accept(this);
+            String childResult = node.getChild(i).accept(this);
             result += childResult;
         }
 
@@ -70,7 +70,20 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitProgram(IParser.ProgramContext ctx) {
-        return String.format(".assembly example{}\n%s", visitChildren(ctx));
+        targetIterator = 0;
+
+        String int32Printer = "\n.method public static void print_int32(int32 a) cil managed \n" +
+                "{\n" +
+                "ldarg.0\n" +
+                "call void [mscorlib]System.Console::WriteLine(int32)\n" +
+                "ret\n" +
+                "}\n";
+
+        identifierToRoutineCall.put("print_int32", "void print_int32(int32)");
+
+        return String.format(".assembly example{}" +
+                int32Printer +
+                "%s", visitChildren(ctx));
     }
 
     /**
@@ -139,20 +152,29 @@ public class ParserVisitor extends IBaseVisitor<String> {
     public String visitRoutine_declaration(IParser.Routine_declarationContext ctx) {
         parameterToNumber = new Hashtable<>();
 
-        switch (ctx.getChild(1).toString()) {
-            case "main":
-                return String.format(".method public static %s %s(%s) cil managed\n{\n.entrypoint\n%sret\n}\n",
-                        ctx.getChild(4).accept(this),
-                        ctx.getChild(1),
-                        ctx.getChild(2).accept(this),
-                        ctx.getChild(6).accept(this));
-            default:
-                return String.format(".method public static %s %s(%s) cil managed\n{\n%sret\n}\n",
-                        ctx.getChild(4).accept(this),
-                        ctx.getChild(1),
-                        ctx.getChild(2).accept(this),
-                        ctx.getChild(6).accept(this));
+        String type = ctx.getChild(4).accept(this);
+        String identifier = ctx.getChild(1).getText();
+        String parameters = ctx.getChild(2).accept(this);
+        String entrypoint = "";
+
+        if (identifier.equals("main")) {
+            entrypoint = ".entrypoint\n";
         }
+
+        if (ctx.getChildCount() == 6) {
+            type = "void";
+        }
+
+        identifierToRoutineCall.put(identifier, String.format("%s %s(%s)", type, identifier, parameters));
+
+        String body = ctx.getChild(ctx.getChildCount() - 2).accept(this);
+
+        return String.format(".method public static %s %s(%s) cil managed\n{\n%s%sret\n}\n",
+                type,
+                identifier,
+                parameters,
+                entrypoint,
+                body);
     }
 
     /**
@@ -298,7 +320,25 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRoutine_call(IParser.Routine_callContext ctx) {
-        return "call " + visitChildren(ctx);
+        String identifier = ctx.getChild(0).getText();
+        if (!identifierToRoutineCall.containsKey(identifier)) {
+            System.out.println(String.format("Error: %s is not defined.", identifier));
+            return "null";
+        }
+
+        String routineCall = identifierToRoutineCall.get(identifier);
+
+        if (ctx.getChildCount() == 1) {
+            return String.format("call %s\n", routineCall);
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 2; i < ctx.getChildCount(); i += 2) {
+            String expression = ctx.getChild(i).accept(this);
+            result.append(expression);
+        }
+
+        result.append(String.format("call %s\n", routineCall));
+        return result.toString();
     }
 
     /**
@@ -353,7 +393,28 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitIf_statement(IParser.If_statementContext ctx) {
-        return "if_statement " + visitChildren(ctx);
+        String expression = ctx.getChild(1).accept(this);
+        String equalTarget = getNextTarget();
+        String exitTarget = getNextTarget();
+        String ifBody = ctx.getChild(3).accept(this);
+        if (ctx.getChildCount() == 7) {
+            return String.format("%sldc.i4.0\nbeq %s\n%sbr %s\n%s:\n%s%s:\n",
+                    expression,
+                    equalTarget,
+                    ctx.getChild(5).accept(this),
+                    exitTarget,
+                    equalTarget,
+                    ifBody,
+                    exitTarget);
+        } else {
+            return String.format("%sldc.i4.0\nbeq %s\nbr %s\n%s:\n%s%s:\n",
+                    expression,
+                    equalTarget,
+                    exitTarget,
+                    equalTarget,
+                    ifBody,
+                    exitTarget);
+        }
     }
 
     /**
@@ -517,7 +578,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         if (parameterToNumber.containsKey(identifier)) {
             return String.format("ldarg.%d\n", parameterToNumber.get(visitChildren(ctx)));
         } else {
-            System.out.println(String.format("Error, %s is not defined.", identifier));
+            System.out.println(String.format("Error: %s is not defined.", identifier));
             return "null";
         }
     }

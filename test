@@ -1,5 +1,13 @@
-routine main(a: integer): integer is
+routine add_value(a: integer) is
+a := a + 1
+print_int32(a)
+end
+
+routine main() is
 var b : integer is 3 + 4
-var c : boolean
-b := b + 1
+if b = 7 then
+    b := 2
+end
+print_int32(b)
+add_value(b)
 end

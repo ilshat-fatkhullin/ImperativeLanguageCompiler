@@ -8,7 +8,7 @@
         },
         {
           "type": 44,
-          "text": "main"
+          "text": "add_value"
         },
         {
           "parameters": [
@@ -47,18 +47,158 @@
           ]
         },
         {
-          "type": 38,
-          "text": ":"
+          "type": 36,
+          "text": "is"
         },
         {
-          "type": [
+          "body": [
             {
-              "primitive_type": [
+              "statement": [
                 {
-                  "type": 31,
-                  "text": "integer"
+                  "assignment": [
+                    {
+                      "modifiable_primary": [
+                        {
+                          "type": 44,
+                          "text": "a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": 14,
+                      "text": ":\u003d"
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 44,
+                                                  "text": "a"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": 1,
+                                      "text": "+"
+                                    },
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "type": 45,
+                                              "text": "1"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
+            },
+            {
+              "statement": [
+                {
+                  "routine_call": [
+                    {
+                      "type": 44,
+                      "text": "print_int32"
+                    },
+                    {
+                      "type": 42,
+                      "text": "("
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 44,
+                                                  "text": "a"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 43,
+                      "text": ")"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": 21,
+          "text": "end"
+        }
+      ]
+    },
+    {
+      "routine_declaration": [
+        {
+          "type": 34,
+          "text": "routine"
+        },
+        {
+          "type": 44,
+          "text": "main"
+        },
+        {
+          "parameters": [
+            {
+              "type": 42,
+              "text": "("
+            },
+            {
+              "type": 43,
+              "text": ")"
             }
           ]
         },
@@ -145,52 +285,16 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "variable_declaration": [
-                    {
-                      "type": 37,
-                      "text": "var"
-                    },
-                    {
-                      "type": 44,
-                      "text": "c"
-                    },
-                    {
-                      "type": 38,
-                      "text": ":"
-                    },
-                    {
-                      "type": [
-                        {
-                          "primitive_type": [
-                            {
-                              "type": 33,
-                              "text": "boolean"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
                 }
               ]
             },
             {
               "statement": [
                 {
-                  "assignment": [
+                  "if_statement": [
                     {
-                      "modifiable_primary": [
-                        {
-                          "type": 44,
-                          "text": "b"
-                        }
-                      ]
-                    },
-                    {
-                      "type": 14,
-                      "text": ":\u003d"
+                      "type": 18,
+                      "text": "if"
                     },
                     {
                       "expression": [
@@ -215,18 +319,26 @@
                                           ]
                                         }
                                       ]
-                                    },
-                                    {
-                                      "type": 1,
-                                      "text": "+"
-                                    },
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": 12,
+                              "text": "\u003d"
+                            },
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
                                     {
                                       "summand": [
                                         {
                                           "primary": [
                                             {
                                               "type": 45,
-                                              "text": "1"
+                                              "text": "7"
                                             }
                                           ]
                                         }
@@ -239,6 +351,170 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": 19,
+                      "text": "then"
+                    },
+                    {
+                      "body": [
+                        {
+                          "statement": [
+                            {
+                              "assignment": [
+                                {
+                                  "modifiable_primary": [
+                                    {
+                                      "type": 44,
+                                      "text": "b"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": 14,
+                                  "text": ":\u003d"
+                                },
+                                {
+                                  "expression": [
+                                    {
+                                      "relation": [
+                                        {
+                                          "simple": [
+                                            {
+                                              "factor": [
+                                                {
+                                                  "summand": [
+                                                    {
+                                                      "primary": [
+                                                        {
+                                                          "type": 45,
+                                                          "text": "2"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 21,
+                      "text": "end"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": [
+                {
+                  "routine_call": [
+                    {
+                      "type": 44,
+                      "text": "print_int32"
+                    },
+                    {
+                      "type": 42,
+                      "text": "("
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 44,
+                                                  "text": "b"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 43,
+                      "text": ")"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": [
+                {
+                  "routine_call": [
+                    {
+                      "type": 44,
+                      "text": "add_value"
+                    },
+                    {
+                      "type": 42,
+                      "text": "("
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 44,
+                                                  "text": "b"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 43,
+                      "text": ")"
                     }
                   ]
                 }
