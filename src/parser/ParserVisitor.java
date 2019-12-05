@@ -5,12 +5,46 @@ import i_grammar.IParser;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Queue;
+import java.util.Stack;
+
 public class ParserVisitor extends IBaseVisitor<String> {
     private int iterator = 0;
+
+    private Hashtable<String, Integer> parameterToNumber = new Hashtable<>();
+
+    private Stack<Hashtable<String, Integer>> variableToNumberStack = new Stack<>();
+
+    private ArrayList<String> variableInitializations = new ArrayList<>();
 
     public String getNextTarget() {
         iterator++;
         return String.format("target_%d", iterator);
+    }
+
+    public Integer getVariableNumber(String identifier) {
+        for (Hashtable<String, Integer> h : variableToNumberStack) {
+            if (h.containsKey(identifier)) {
+                return h.get(identifier);
+            }
+        }
+
+        if (parameterToNumber.containsKey(identifier)) {
+            return parameterToNumber.get(identifier);
+        } else {
+            System.out.println(String.format("Error: %s is not defined.", identifier));
+            return 0;
+        }
+    }
+
+    public String getExpressionType(ParseTree expression) {
+        ParseTree relation = expression.getChild(0);
+        if (relation.getChildCount() >= 2) {
+            return "bool";
+        }
+        return relation.getChild(0).getChild(0).getChild(0).getChild(0).getText();
     }
 
     @Override
@@ -36,7 +70,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitProgram(IParser.ProgramContext ctx) {
-        return visitChildren(ctx);
+        return String.format(".assembly example{}\n%s", visitChildren(ctx));
     }
 
     /**
@@ -47,7 +81,14 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitSimple_declaration(IParser.Simple_declarationContext ctx) {
-        return "simple_declaration " + visitChildren(ctx);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            result.append(ctx.getChild(i).accept(this));
+            if (i < ctx.getChildCount() - 1) {
+                result.append(",\n");
+            }
+        }
+        return String.format(".locals init (\n%s\n)\n", result);
     }
 
     /**
@@ -58,7 +99,10 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitVariable_declaration(IParser.Variable_declarationContext ctx) {
-        return "variable_declaration " + visitChildren(ctx);
+        Integer number = variableToNumberStack.peek().size();
+        String identifier = ctx.getChild(1).getText();
+        variableToNumberStack.peek().put(identifier, number);
+        return String.format("[%d] %s %s", number, ctx.getChild(3).accept(this), identifier);
     }
 
     /**
@@ -80,15 +124,17 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRoutine_declaration(IParser.Routine_declarationContext ctx) {
+        parameterToNumber = new Hashtable<>();
+
         switch (ctx.getChild(1).toString()) {
             case "main":
-                return String.format(".method static %s %s(%s) cil managed\n{\n.entrypoint\n%s}\n",
+                return String.format(".method public static %s %s(%s) cil managed\n{\n.entrypoint\n%sret\n}\n",
                         ctx.getChild(4).accept(this),
                         ctx.getChild(1),
                         ctx.getChild(2).accept(this),
                         ctx.getChild(6).accept(this));
             default:
-                return String.format(".method static %s %s(%s) cil managed\n{\n%s\n}\n",
+                return String.format(".method public static %s %s(%s) cil managed\n{\n%sret\n}\n",
                         ctx.getChild(4).accept(this),
                         ctx.getChild(1),
                         ctx.getChild(2).accept(this),
@@ -124,6 +170,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
     public String visitParameter_declaration(IParser.Parameter_declarationContext ctx) {
         String identifier = ctx.getChild(0).getText();
         String type = ctx.getChild(2).accept(this);
+        parameterToNumber.put(identifier, parameterToNumber.size());
         return String.format("%s %s", type, identifier);
     }
 
@@ -187,7 +234,10 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitBody(IParser.BodyContext ctx) {
-        return visitChildren(ctx);
+        variableToNumberStack.push(new Hashtable<>());
+        String result = visitChildren(ctx);
+        variableToNumberStack.pop();
+        return result;
     }
 
     /**
@@ -209,9 +259,22 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitAssignment(IParser.AssignmentContext ctx) {
-        return String.format("%sstloc %s\n",
-                ctx.getChild(2).accept(this),
-                ctx.getChild(0).accept(this));
+        String identifier = ctx.getChild(0).accept(this);
+        for (Hashtable<String, Integer> h : variableToNumberStack) {
+            if (h.containsKey(identifier)) {
+                return String.format("%sstloc.%d\n",
+                        ctx.getChild(2).accept(this),
+                        h.get(ctx.getChild(0).accept(this)));
+            }
+        }
+        if (parameterToNumber.containsKey(identifier)) {
+            return String.format("%sstarg %d\n",
+                    ctx.getChild(2).accept(this),
+                    parameterToNumber.get(ctx.getChild(0).accept(this)));
+        } else {
+            System.out.println(String.format("Error: %s is not defined.", identifier));
+            return "null";
+        }
     }
 
     /**
@@ -222,7 +285,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
      */
     @Override
     public String visitRoutine_call(IParser.Routine_callContext ctx) {
-        return "routine_call " + visitChildren(ctx);
+        return "call " + visitChildren(ctx);
     }
 
     /**
@@ -430,7 +493,20 @@ public class ParserVisitor extends IBaseVisitor<String> {
         if (ctx.getChild(0).getChildCount() == 0) {
             return String.format("ldc.i4 %s\n", ctx.getChild(0).getText());
         }
-        return String.format("ldloc %s\n", visitChildren(ctx));
+        String identifier = visitChildren(ctx);
+
+        for (Hashtable<String, Integer> h : variableToNumberStack) {
+            if (h.containsKey(identifier)) {
+                return String.format("ldloc.%d\n", h.get(visitChildren(ctx)));
+            }
+        }
+
+        if (parameterToNumber.containsKey(identifier)) {
+            return String.format("ldarg.%d\n", parameterToNumber.get(visitChildren(ctx)));
+        } else {
+            System.out.println(String.format("Error, %s is not defined.", identifier));
+            return "null";
+        }
     }
 
     /**

@@ -8,7 +8,7 @@
         },
         {
           "type": 44,
-          "text": "a"
+          "text": "main"
         },
         {
           "parameters": [
@@ -20,7 +20,7 @@
               "parameter_declaration": [
                 {
                   "type": 44,
-                  "text": "b"
+                  "text": "a"
                 },
                 {
                   "type": 38,
@@ -55,8 +55,8 @@
             {
               "primitive_type": [
                 {
-                  "type": 33,
-                  "text": "boolean"
+                  "type": 31,
+                  "text": "integer"
                 }
               ]
             }
@@ -68,6 +68,98 @@
         },
         {
           "body": [
+            {
+              "simple_declaration": [
+                {
+                  "variable_declaration": [
+                    {
+                      "type": 37,
+                      "text": "var"
+                    },
+                    {
+                      "type": 44,
+                      "text": "b"
+                    },
+                    {
+                      "type": 38,
+                      "text": ":"
+                    },
+                    {
+                      "type": [
+                        {
+                          "primitive_type": [
+                            {
+                              "type": 31,
+                              "text": "integer"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 36,
+                      "text": "is"
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "type": 45,
+                                              "text": "0"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "variable_declaration": [
+                    {
+                      "type": 37,
+                      "text": "var"
+                    },
+                    {
+                      "type": 44,
+                      "text": "c"
+                    },
+                    {
+                      "type": 38,
+                      "text": ":"
+                    },
+                    {
+                      "type": [
+                        {
+                          "primitive_type": [
+                            {
+                              "type": 33,
+                              "text": "boolean"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
             {
               "statement": [
                 {

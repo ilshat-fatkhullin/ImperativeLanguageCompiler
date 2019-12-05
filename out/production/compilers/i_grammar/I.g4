@@ -56,15 +56,15 @@ WS : [ \t\r\n^Z]+ -> skip ;
 fragment EXPONENT : ('e') ('+' | '-')? ('0' .. '9') + ;
 
 program
-    : ( simple_declaration | routine_declaration )
+    : ( simple_declaration | routine_declaration )*
     ;
 
 simple_declaration
-    : variable_declaration | type_declaration
+    : (variable_declaration | type_declaration )+
     ;
 
 variable_declaration
-    : VAR IDENTIFIER COLON type ( IS expression ) | VAR IDENTIFIER IS expression
+    : VAR IDENTIFIER COLON type ( IS expression )? | VAR IDENTIFIER IS expression
     ;
 
 type_declaration
@@ -100,7 +100,7 @@ array_type
     ;
 
 body
-    : simple_declaration? statement?
+    : (simple_declaration)* (statement)*
     ;
 
 statement
