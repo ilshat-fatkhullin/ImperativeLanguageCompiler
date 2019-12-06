@@ -8,17 +8,31 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import parser.ParserVisitor;
+import parser.Preprocessor;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        InputStream is = new FileInputStream("input");
 
-        CharStream stream = CharStreams.fromFileName("input");
+        BufferedReader buf = new BufferedReader(new InputStreamReader(is));
+        String line = buf.readLine();
+        ArrayList<String> code = new ArrayList<>();
+        while (line != null) {
+            code.add(line);
+            line = buf.readLine();
+        }
+        Preprocessor preprocessor = new Preprocessor();
+        String preprocessed = preprocessor.preprocess(code);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("inputPreprocessed"));
+        writer.write(preprocessed);
+        writer.close();
+
+        CharStream stream = CharStreams.fromFileName("inputPreprocessed");
 
         ILexer lexer = new ILexer(stream);
 
@@ -47,7 +61,7 @@ public class Main {
         String result = extractor.visit(tree);
         System.out.println(result);
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("output.il"));
+        writer = new BufferedWriter(new FileWriter("output.il"));
         writer.write(result);
         writer.close();
     }

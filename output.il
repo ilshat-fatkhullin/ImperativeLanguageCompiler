@@ -21,25 +21,25 @@ ret
 }
 .method public static void main() cil managed
 {
-.entrypoint
 .locals init (
-[0] int32 b
+[0] int32 a
 )
+.entrypoint
 ldc.i4 0
 stloc.0
-IL_0004:
+IL_0001:
 ldloc.0
 ldc.i4 10
 clt
 ldc.i4.0
-beq IL_0006
+beq IL_0002
 ldloc.0
 call void print_integer(int32)
 ldloc.0
 ldc.i4 1
 add
 stloc.0
-br IL_0004
-IL_0006:
+br IL_0001
+IL_0002:
 ret
 }
