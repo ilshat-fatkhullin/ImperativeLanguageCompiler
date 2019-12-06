@@ -1,7 +1,5 @@
 routine main() is
-var a : integer is 0
-while a < 10 loop
-print_integer(a);
-a := a + 1
+for i in 1..3 loop
+print_boolean(false)
 end
 end

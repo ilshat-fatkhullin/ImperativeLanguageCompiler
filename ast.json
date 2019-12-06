@@ -38,7 +38,7 @@
                     },
                     {
                       "type": 45,
-                      "text": "a"
+                      "text": "i"
                     },
                     {
                       "type": 39,
@@ -74,7 +74,203 @@
                                           "primary": [
                                             {
                                               "type": 46,
-                                              "text": "0"
+                                              "text": "1"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": [
+                {
+                  "if_statement": [
+                    {
+                      "type": 18,
+                      "text": "if"
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 45,
+                                                  "text": "i"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": 10,
+                              "text": "\u003e"
+                            },
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "type": 46,
+                                              "text": "3"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 19,
+                      "text": "then"
+                    },
+                    {
+                      "body": [
+                        {
+                          "statement": [
+                            {
+                              "assignment": [
+                                {
+                                  "modifiable_primary": [
+                                    {
+                                      "type": 45,
+                                      "text": "i"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": 14,
+                                  "text": ":\u003d"
+                                },
+                                {
+                                  "expression": [
+                                    {
+                                      "relation": [
+                                        {
+                                          "simple": [
+                                            {
+                                              "factor": [
+                                                {
+                                                  "summand": [
+                                                    {
+                                                      "primary": [
+                                                        {
+                                                          "type": 46,
+                                                          "text": "3"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": 21,
+                      "text": "end"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": [
+                {
+                  "assignment": [
+                    {
+                      "modifiable_primary": [
+                        {
+                          "type": 45,
+                          "text": "i"
+                        }
+                      ]
+                    },
+                    {
+                      "type": 14,
+                      "text": ":\u003d"
+                    },
+                    {
+                      "expression": [
+                        {
+                          "relation": [
+                            {
+                              "simple": [
+                                {
+                                  "factor": [
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "modifiable_primary": [
+                                                {
+                                                  "type": 45,
+                                                  "text": "i"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": 2,
+                                      "text": "-"
+                                    },
+                                    {
+                                      "summand": [
+                                        {
+                                          "primary": [
+                                            {
+                                              "type": 46,
+                                              "text": "1"
                                             }
                                           ]
                                         }
@@ -111,27 +307,83 @@
                                     {
                                       "summand": [
                                         {
-                                          "primary": [
+                                          "type": 43,
+                                          "text": "("
+                                        },
+                                        {
+                                          "expression": [
                                             {
-                                              "modifiable_primary": [
+                                              "relation": [
                                                 {
-                                                  "type": 45,
-                                                  "text": "a"
+                                                  "simple": [
+                                                    {
+                                                      "factor": [
+                                                        {
+                                                          "summand": [
+                                                            {
+                                                              "primary": [
+                                                                {
+                                                                  "modifiable_primary": [
+                                                                    {
+                                                                      "type": 45,
+                                                                      "text": "i"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": 8,
+                                                  "text": "\u003c"
+                                                },
+                                                {
+                                                  "simple": [
+                                                    {
+                                                      "factor": [
+                                                        {
+                                                          "summand": [
+                                                            {
+                                                              "primary": [
+                                                                {
+                                                                  "type": 46,
+                                                                  "text": "1"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
                                                 }
                                               ]
                                             }
                                           ]
+                                        },
+                                        {
+                                          "type": 44,
+                                          "text": ")"
                                         }
                                       ]
                                     }
                                   ]
                                 }
                               ]
-                            },
-                            {
-                              "type": 8,
-                              "text": "\u003c"
-                            },
+                            }
+                          ]
+                        },
+                        {
+                          "type": 16,
+                          "text": "or"
+                        },
+                        {
+                          "relation": [
                             {
                               "simple": [
                                 {
@@ -139,12 +391,68 @@
                                     {
                                       "summand": [
                                         {
-                                          "primary": [
+                                          "type": 43,
+                                          "text": "("
+                                        },
+                                        {
+                                          "expression": [
                                             {
-                                              "type": 46,
-                                              "text": "10"
+                                              "relation": [
+                                                {
+                                                  "simple": [
+                                                    {
+                                                      "factor": [
+                                                        {
+                                                          "summand": [
+                                                            {
+                                                              "primary": [
+                                                                {
+                                                                  "modifiable_primary": [
+                                                                    {
+                                                                      "type": 45,
+                                                                      "text": "i"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": 8,
+                                                  "text": "\u003c"
+                                                },
+                                                {
+                                                  "simple": [
+                                                    {
+                                                      "factor": [
+                                                        {
+                                                          "summand": [
+                                                            {
+                                                              "primary": [
+                                                                {
+                                                                  "type": 46,
+                                                                  "text": "3"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
                                             }
                                           ]
+                                        },
+                                        {
+                                          "type": 44,
+                                          "text": ")"
                                         }
                                       ]
                                     }
@@ -165,64 +473,12 @@
                         {
                           "statement": [
                             {
-                              "routine_call": [
-                                {
-                                  "type": 45,
-                                  "text": "print_integer"
-                                },
-                                {
-                                  "type": 43,
-                                  "text": "("
-                                },
-                                {
-                                  "expression": [
-                                    {
-                                      "relation": [
-                                        {
-                                          "simple": [
-                                            {
-                                              "factor": [
-                                                {
-                                                  "summand": [
-                                                    {
-                                                      "primary": [
-                                                        {
-                                                          "modifiable_primary": [
-                                                            {
-                                                              "type": 45,
-                                                              "text": "a"
-                                                            }
-                                                          ]
-                                                        }
-                                                      ]
-                                                    }
-                                                  ]
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": 44,
-                                  "text": ")"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "statement": [
-                            {
                               "assignment": [
                                 {
                                   "modifiable_primary": [
                                     {
                                       "type": 45,
-                                      "text": "a"
+                                      "text": "i"
                                     }
                                   ]
                                 },
@@ -246,7 +502,7 @@
                                                           "modifiable_primary": [
                                                             {
                                                               "type": 45,
-                                                              "text": "a"
+                                                              "text": "i"
                                                             }
                                                           ]
                                                         }
@@ -277,6 +533,54 @@
                                       ]
                                     }
                                   ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "statement": [
+                            {
+                              "routine_call": [
+                                {
+                                  "type": 45,
+                                  "text": "print_boolean"
+                                },
+                                {
+                                  "type": 43,
+                                  "text": "("
+                                },
+                                {
+                                  "expression": [
+                                    {
+                                      "relation": [
+                                        {
+                                          "simple": [
+                                            {
+                                              "factor": [
+                                                {
+                                                  "summand": [
+                                                    {
+                                                      "primary": [
+                                                        {
+                                                          "type": 7,
+                                                          "text": "false"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": 44,
+                                  "text": ")"
                                 }
                               ]
                             }

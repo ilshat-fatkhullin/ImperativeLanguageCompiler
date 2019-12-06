@@ -2,6 +2,7 @@ package parser;
 
 import i_grammar.IBaseVisitor;
 import i_grammar.IParser;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 
 import java.util.ArrayList;
@@ -16,11 +17,55 @@ public class ParserVisitor extends IBaseVisitor<String> {
 
     private ArrayList<String> variableInitializations;
 
-    private Hashtable<String, String> identifierToRoutineCall;
+    private Hashtable<String, RoutineInfo> identifierToRoutineCall;
+
+    private String expressionType;
 
     private String getNextTarget() {
         targetIterator++;
         return String.format("IL_%04d", targetIterator);
+    }
+
+    private String getConversion(ParseTree a, ParseTree b) {
+        String leftType = getType(a);
+        String rightType = getType(b);
+
+        String conversion = "";
+
+        if (!leftType.equals(rightType)) {
+            switch (leftType) {
+                case "int32":
+                    conversion = "conv.i4\n";
+                    break;
+                case "bool":
+                    conversion = "conv.i4\n";
+                    break;
+                case "real":
+                    conversion = "conv.r4\n";
+                    break;
+            }
+        }
+        return conversion;
+    }
+
+    private String getType(ParseTree node) {
+        if (node.getChildCount() > 1) {
+            return getType(node.getChild(0));
+        }
+
+        String text = node.getText();
+
+        if (localVariableInfo.containsKey(text)) {
+            return localVariableInfo.get(text).type;
+        }
+        if (identifierToRoutineCall.containsKey(text)) {
+            return identifierToRoutineCall.get(text).type;
+        }
+        if (text.contains("."))
+            return "float32";
+        if (text.equals("false") || text.equals("true"))
+            return "bool";
+        return "int32";
     }
 
     @Override
@@ -69,9 +114,9 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 "}\n";
 
         identifierToRoutineCall = new Hashtable<>();
-        identifierToRoutineCall.put("print_integer", "void print_integer(int32)");
-        identifierToRoutineCall.put("print_real", "void print_real(float32)");
-        identifierToRoutineCall.put("print_boolean", "void print_boolean(bool)");
+        identifierToRoutineCall.put("print_integer", new RoutineInfo("void print_integer(int32)", "void"));
+        identifierToRoutineCall.put("print_real", new RoutineInfo("void print_real(float32)", "void"));
+        identifierToRoutineCall.put("print_boolean", new RoutineInfo("void print_boolean(bool)", "void"));
 
         return String.format(".assembly example{}" +
                 int32Printer +
@@ -155,8 +200,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
 
         if (ctx.getChildCount() == 6) {
             type = "void";
-        }
-        else {
+        } else {
             type = ctx.getChild(4).accept(this);
         }
 
@@ -168,7 +212,8 @@ public class ParserVisitor extends IBaseVisitor<String> {
             formattedCallParameters.append(' ');
         }
 
-        identifierToRoutineCall.put(identifier, String.format("%s %s(%s)", type, identifier, formattedCallParameters.toString().trim()));
+        identifierToRoutineCall.put(identifier,
+                new RoutineInfo(String.format("%s %s(%s)", type, identifier, formattedCallParameters.toString().trim()), type));
 
         String body = ctx.getChild(ctx.getChildCount() - 2).accept(this);
 
@@ -363,7 +408,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
             return "null";
         }
 
-        String routineCall = identifierToRoutineCall.get(identifier);
+        String routineCall = identifierToRoutineCall.get(identifier).call;
 
         if (ctx.getChildCount() == 3) {
             return String.format("call %s\n", routineCall);
@@ -473,6 +518,7 @@ public class ParserVisitor extends IBaseVisitor<String> {
         if (ctx.getChildCount() == 1) {
             return visitChildren(ctx);
         }
+
         String op;
         switch (ctx.getChild(1).getText()) {
             case "and":
@@ -488,9 +534,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 System.out.println("(expression) error when parsing op code.");
                 return "";
         }
-        return String.format("%s%s%s\n",
+
+        String conversion = getConversion(ctx.getChild(0), ctx.getChild(2));
+
+        return String.format("%s%s%s%s\n",
                 ctx.getChild(0).accept(this),
                 ctx.getChild(2).accept(this),
+                conversion,
                 op);
     }
 
@@ -526,9 +576,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 System.out.println("(relation) error when parsing op code.");
                 return "";
         }
-        return String.format("%s%s%s\n",
+
+        String conversion = getConversion(ctx.getChild(0), ctx.getChild(2));
+
+        return String.format("%s%s%s%s\n",
                 ctx.getChild(0).accept(this),
                 ctx.getChild(2).accept(this),
+                conversion,
                 op);
     }
 
@@ -555,9 +609,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 System.out.println("Error when parsing op code.");
                 return "";
         }
-        return String.format("%s%s%s\n",
+
+        String conversion = getConversion(ctx.getChild(0), ctx.getChild(2));
+
+        return String.format("%s%s%s%s\n",
                 ctx.getChild(0).accept(this),
                 ctx.getChild(2).accept(this),
+                conversion,
                 op);
     }
 
@@ -584,9 +642,13 @@ public class ParserVisitor extends IBaseVisitor<String> {
                 System.out.println("Error when parsing op code.");
                 return "";
         }
-        return String.format("%s%s%s\n",
+
+        String conversion = getConversion(ctx.getChild(0), ctx.getChild(2));
+
+        return String.format("%s%s%s%s\n",
                 ctx.getChild(0).accept(this),
                 ctx.getChild(2).accept(this),
+                conversion,
                 op);
     }
 

@@ -1,7 +1,11 @@
 routine main() is
-var a : integer is 0
-while a < 10 loop
-print_integer(a);
-a := a + 1
+var i: integer is 1
+if i > 3 then
+ i := 3
+end
+i := i - 1
+while (i < 1) or (i < 3) loop
+i := i + 1
+print_boolean(false)
 end
 end
